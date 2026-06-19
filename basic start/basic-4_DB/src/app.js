@@ -28,7 +28,7 @@ app.get("/api/user", async (req, res) => {
 });
 
 /**
- * DELETE
+ * DELETE -> id = req.params.id
  */
 app.delete("/api/user/:id", async (req, res) => {
   const id = req.params.id;
@@ -37,5 +37,17 @@ app.delete("/api/user/:id", async (req, res) => {
     message: "User deleted successfully",
   });
 });
+
+/**
+ * UPDATE -> req.params.id
+ */
+app.patch("/api/user/:id",async(req,res)=>{
+    const id = req.params.id;
+    const {age} = req.body;
+    await userModel.findByIdAndUpdate(id, {age})
+    res.status(200).json({
+        message:"User updaated successfully"
+    })
+})
 
 module.exports = app;
