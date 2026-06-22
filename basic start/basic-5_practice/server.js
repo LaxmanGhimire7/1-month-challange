@@ -1,4 +1,5 @@
 // server start garna and also db
+require("dotenv").config()
 const app = require("./src/app");
 const connectToDb = require("./src/config/database");
 
