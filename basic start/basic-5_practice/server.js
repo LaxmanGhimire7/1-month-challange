@@ -1,0 +1,14 @@
+// server start garna and also db
+const app = require("./src/app");
+const connectToDb = require("./src/config/database");
+
+//Connected to Db....
+connectToDb();
+
+
+
+
+
+app.listen(3000,()=>{
+    console.log("Server is running on port 3000....")
+})
