@@ -17,15 +17,9 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { userName, photo, age, country, email } = e.target.elements;
-    console.log(
-      userName.value,
-      photo.value,
-      age.value,
-      country.value,
-      email.value,
-    );
 
+    const { userName, photo, age, email, country } = e.target.elements;
+    console.log(userName.value);
     axios
       .post("http://localhost:3000/api/register", {
         userName: userName.value,
@@ -35,17 +29,17 @@ const App = () => {
         country: country.value,
       })
       .then((res) => {
-       getUser()
+        getUser();
       });
   };
 
-  const handleDelete = (userId) => {
-    console.log(userId)
-    axios.delete("http://localhost:3000/api/user/"+userId)
-    .then(res=>{
-     getUser()
-    })
-  };
+  const handleDelete = (userId) =>{
+   console.log(userId)
+   axios.delete("http://localhost:3000/api/user/"+userId)
+   .then(res=>{
+      getUser()
+   })
+  }
 
   return (
     <div className="min-h-screen p-4 flex gap-20">
@@ -84,7 +78,9 @@ const App = () => {
           />
 
           <div className="flex justify-center gap-3 text-white font-medium mt-2">
-            <button className="bg-emerald-600 p-2 w-full rounded-sm">Submit</button>
+            <button className="bg-emerald-600 p-2 w-full rounded-sm">
+              Submit
+            </button>
           </div>
         </form>
       </div>
@@ -106,15 +102,17 @@ const App = () => {
                 </h2>
                 <p>{users.email}</p>
                 <p>{users.country}</p>
-               
               </div>
               <div className="flex gap-2 justify-center">
-                <button className="bg-yellow-400 p-2 w-32 rounded-sm">Update</button>
+                <button className="bg-yellow-400 p-2 w-32 rounded-sm">
+                  Update
+                </button>
                 <button onClick={()=>{
                   handleDelete(users._id)
-                }} className="bg-red-500 p-2 w-32 rounded-sm">Delete</button>
+                }} className="bg-red-500 p-2 w-32 rounded-sm">
+                  Delete
+                </button>
               </div>
-               
             </div>
           );
         })}
