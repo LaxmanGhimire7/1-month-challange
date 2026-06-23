@@ -4,8 +4,9 @@ const cors = require("cors")
 const app = express();
 
 
-app.use(cors())
 app.use(express.json())
+app.use(cors())
+app.use(express.static("./public"))
 
 //POST
 app.post("/api/register",async(req,res)=>{
@@ -45,6 +46,10 @@ app.patch("/api/user/:id",async(req,res)=>{
     })
 })
 
+app.use("*name",(req,res)=>{
+    // console.log("This is wild card")
+    res.sendFile(__dirname,"..","\public\index.html")
+})
 
 
 
