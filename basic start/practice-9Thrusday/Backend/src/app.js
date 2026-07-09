@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 const productModel = require("./model/product.model");
+const cors = require("cors")
+
+app.use(cors())
 
 //Middleware
 app.use(express.json());
