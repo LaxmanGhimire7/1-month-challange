@@ -4,7 +4,7 @@ const authRoutes = require("./routes/auth.routes")
 
 app.use(express.json())
 
-//Routes
+//Routes and
 app.use("/api/auth", authRoutes)
 
 module.exports = app;
