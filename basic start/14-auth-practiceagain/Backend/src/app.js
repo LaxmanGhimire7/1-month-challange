@@ -2,10 +2,11 @@
 const express = require("express");
 const app = express();
 const authRouter = require("./Routes/auth.route")
+const cookieParser = require("cookie-parser")
 
 //Middleware
 app.use(express.json())
-
+app.use(cookieParser())
 
 app.use("/api/auth",authRouter);
 
