@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 
 const authRouter = express.Router();
 
+
+//Register
 authRouter.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -22,8 +24,8 @@ authRouter.post("/register", async (req, res) => {
     process.env.JWT_SECRET,
     { expiresIn: "1h" },
   );
- 
-  res.cookie("jwt_token", token)
+
+  res.cookie("jwt_token", token);
 
   res.status(201).json({
     message: "User registered successfully...",
@@ -31,5 +33,22 @@ authRouter.post("/register", async (req, res) => {
     token,
   });
 });
+
+
+//Protected or get-me route to see the authentication -> who is the person
+authRouter.get("/get-me",async(req,res)=>{
+    const token = req.cookies.jwt_token; // the name at last should be the prefix 8i used at top res.cookies....
+    // console.log(token)
+    const decoded = jwt.verify(token,process.env.JWT_SECRET)
+    // console.log(decoded)
+    const user = await userModel.findById(decoded.id)
+    res.json({
+        user:{
+            id:user._id,
+            email:user.email
+        }
+    })
+
+})
 
 module.exports = authRouter;
