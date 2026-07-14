@@ -1,5 +1,6 @@
 const express = require("express");
 const userModel = require("../Models/user.model")
+const jwt = require("jsonwebtoken")
 
 const authRouter = express.Router();
 
@@ -12,9 +13,19 @@ if(userAlreadyExist){
 }
 
 const user = await userModel.create({username, email, password});
+
+const token = jwt.sign({
+    id:user._id,
+    email:user.email
+},
+process.env.JWT_SECRETS
+)
+
 res.status(201).json({
     message:"User registered successsfully...",
-    user
+    user,
+    token
+
 })
 
 })
