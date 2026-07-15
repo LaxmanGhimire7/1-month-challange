@@ -1,0 +1,16 @@
+Authentication
+  ==> register
+  ==> login
+  ==> logout
+  ==>[otp based login]
+
+==> POST
+  ==>create
+  ==>can see the feed
+  ==>like post(collection type)
+  ==>save post
+
+
+==> user
+  ==>followers
+  ==>following
