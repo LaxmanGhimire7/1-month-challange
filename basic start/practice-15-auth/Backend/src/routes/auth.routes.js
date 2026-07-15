@@ -43,9 +43,8 @@ Router.get("/get-me",async(req,res)=>{
     const token = req.cookies.token
     console.log(token)
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(token)
+    console.log(decoded)
     const user = await userModel.findById(decoded.id)
-    console.log(user)
     res.json({
         user
     })
