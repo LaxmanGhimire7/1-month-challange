@@ -3,6 +3,7 @@ const { toFile } = require("@imagekit/nodejs");
 const { Folders } = require("@imagekit/nodejs/resources/index.js");
 const jwt = require("jsonwebtoken");
 const postModel = require("../model/post.model");
+const { post } = require("../routes/post.route");
 
 const client = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY, // This is the default and can be omitted
@@ -72,8 +73,56 @@ res.status(200).json({
 };
 
 
+const getPostDetailsController = async(req,res)=>{
+   const token = req.cookies.token;
+   if(!token){
+    return res.status(401).json({
+      message:"Unauthorized access"
+    })
+   } 
+
+  let decodedData;
+  try {
+      decodedData = await jwt.verify(token, process.env.JWT_SECRET)
+  } catch (error) {
+    res.status(401).json({
+      message: "Invalid token"
+    })
+  }
+
+  console.log(decodedData)
+
+  const userId = decodedData.id;
+  const postId = req.params.postId
+  //  console.log(userId)
+  // console.log(postId)
+  
+  const posts = await postModel.findById(postId);
+  // console.log(posts)
+  if(!posts){
+    return res.status(404).json({
+      message: "Post not found"
+    })
+  }
+
+  const isValidUser = posts.users.toString() === userId;
+if(!isValidUser){
+  return res.status(403).json({
+    message:"Forbidden content"
+  })
+}
+
+return res.status(200).json({
+  message:"Post fetched syccessfully",
+  posts
+})
+
+
+}
+
 
 module.exports = {
   createPostController,
   getPostController,
+  getPostDetailsController
 };
