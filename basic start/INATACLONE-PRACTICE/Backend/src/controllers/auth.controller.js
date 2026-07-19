@@ -81,7 +81,7 @@ const loginController = async (req, res) => {
         email:user.email,
         bio:user.bio,
         userImage:user.userImage
-    }
+    }, token
   })
 };
 
