@@ -37,38 +37,37 @@ const registerController = async (req, res) => {
     process.env.JWT_SECRET,
     { expiresIn: "1d" },
   );
-  res.cookie("token", token)
+  res.cookie("token", token);
   res.status(201).json({
-    message:"User registered successfully...",
-    user:{
-       username,
-       email,
-       bio,
-       profileImage
+    message: "User registered successfully...",
+    user: {
+      username,
+      email,
+      bio,
+      profileImage,
     },
-    token
-  })
-  
+    token,
+  });
 };
 
-const loginController = async (req,res)=>{
-  const {email, username, password} = req.body;
+const loginController = async (req, res) => {
+  const { email, username, password } = req.body;
 
   const user = await userModel.findOne({
-    $or:[{username:username}, {email:email}]
-  })
+    $or: [{ username: username }, { email: email }],
+  });
 
-  if(!user){
+  if (!user) {
     return res.status(404).json({
-        message:"User not found"
-    })
+      message: "User not found",
+    });
   }
 
   const hashedPassword = bcrypt.compare(password, user.password);
-  if(!hashedPassword){
+  if (!hashedPassword) {
     return res.status(401).json({
-        message:"Invalid password"
-    })
+      message: "Invalid password",
+    });
   }
 
   const token = jwt.sign(
@@ -80,15 +79,17 @@ const loginController = async (req,res)=>{
     { expiresIn: "1d" },
   );
 
-  res.cookie("token",token)
+  res.cookie("token", token);
   res.status(200).json({
-    message:"User login successful",
-    user:{
-        username:user.username, email:user.email, bio:user.bio, profileImage:user.profileImage
+    message: "User login successful",
+    user: {
+      username: user.username,
+      email: user.email,
+      bio: user.bio,
+      profileImage: user.profileImage,
     },
-    token
-  })
-}
-
+    token,
+  });
+};
 
 module.exports = { registerController, loginController };
