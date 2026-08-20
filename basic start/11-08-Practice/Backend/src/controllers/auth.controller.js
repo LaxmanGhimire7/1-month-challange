@@ -43,7 +43,8 @@ const userRegisterController = async (req, res) => {
       email,
       profileImage,
       bio,
-    },token
+    },
+    token,
   });
 };
 
