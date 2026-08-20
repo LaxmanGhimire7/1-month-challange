@@ -12,8 +12,8 @@ const userSchema = new mongoose.Schema({
         unique:[true,"email already exists"]
     },
     profileImage:{
+        default:"https://ik.imagekit.io/3wmfdkip4/lakxh_tS-LQOo4_?updatedAt=1784141737902",
         type:String,
-        default:"https://ik.imagekit.io/3wmfdkip4/lakxh_tS-LQOo4_?updatedAt=1784141737902"
     },
     password:{
         type:String,
