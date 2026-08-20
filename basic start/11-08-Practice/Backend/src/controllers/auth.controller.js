@@ -43,7 +43,7 @@ const userRegisterController = async (req, res) => {
       email,
       profileImage,
       bio,
-    },
+    },token
   });
 };
 
@@ -59,7 +59,7 @@ const loginController = async (req, res) => {
     });
   }
 
-  const isPasswordValid = bcrypt.compare(password, user.password);
+  const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     return res.status(400).json({
       message: "Invalid Password",
