@@ -47,12 +47,49 @@ const registerController = async (req, res) => {
       profileImage,
       bio,
     },
-    token
+    token,
   });
 };
 
-const loginController = (req, res) => {
-    
+const loginController = async (req, res) => {
+  const { userName, email, password } = req.body;
+
+  const user = await userModel.findOne({
+    $or: [{ userName: userName }, { email: email }],
+  });
+
+  if (!user) {
+    return res.status(404).json({
+      message: "User with this email or username not found",
+    });
+  }
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    return res.status(400).json({
+      message: "Invalid Password",
+    });
+  }
+
+  const token = jwt.sign(
+    {
+      id: user._id,
+      email: user.email,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "1d" },
+  );
+  res.cookie("token", token);
+  // console.log(token)
+  res.status(200).json({
+    message: "Login successful",
+    user: {
+      userName:user.userName,
+      email:user.email,
+      profileImage:user.profileImage,
+      bio:user.bio,
+    },
+    token,
+  });
 };
 
 module.exports = { registerController, loginController };
