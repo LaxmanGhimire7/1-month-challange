@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken")
 
-async function identifyUser(params) {
+async function identifyUser(req, res, next) {
      const token = req.cookies.token;
   if (!token) {
     return res.status(401).json({
@@ -17,6 +17,9 @@ async function identifyUser(params) {
       message: "Unauthorized",
     });
   }
+
+  req.user = decodedUser;
+  next();
 }
 
 module.exports = identifyUser;

@@ -42,10 +42,10 @@ const getPostDetailController = async (req, res) => {
   const postId = req.params.postId;
   // console.log(postId)
   const post = await postModel.findById(postId);
-  console.log(post);
+//   console.log(post);
   if (!post) {
     return res.status(404).json({
-      message: "Post not found",
+      message: "Post not found", 
     });
   }
   const isValidUser = post.users.toString() === userId;

@@ -10,7 +10,6 @@ const client = new ImageKit({
 const createPostController = async (req, res) => {
   //    console.log(req.body, req.file)
   // console.log(req.cookies)
- 
 
   const response = await client.files.upload({
     file: await toFile(Buffer.from(req.file.buffer), "file"),
@@ -20,7 +19,7 @@ const createPostController = async (req, res) => {
   const post = await postModel.create({
     caption: req.body.caption,
     imageUrl: response.url,
-    user: decodedUser.id,
+    user: req.user.id,
   });
 
   res.status(201).json({
@@ -29,51 +28,44 @@ const createPostController = async (req, res) => {
   });
 };
 
-
 //
 const getAllPostController = async (req, res) => {
-  
-//   console.log(decodedUser)
+  //   console.log(decodedUser)
 
-  const userId = ;
-//   console.log(userId)
-const posts = await postModel.find({user:userId})
-// console.log(posts)
-res.status(200).json({
-    message:"Posts fetched successfully...",
-    posts
-})
+  const userId = req.user.id;
+  //   console.log(userId)
+  const posts = await postModel.find({ user: userId });
+  // console.log(posts)
+  res.status(200).json({
+    message: "Posts fetched successfully...",
+    posts,
+  });
 };
 
-
-const getPostDetail = async(req,res)=>{
- 
-
-  const userId = ;
+const getPostDetail = async (req, res) => {
+  const userId = req.user.id;
   const postId = req.params.postId;
-//   console.log(postId)
+  //   console.log(postId)
 
-const post = await postModel.findById(postId);
+  const post = await postModel.findById(postId);
 
-if(!post){
+  if (!post) {
     return res.status(404).json({
-        message:"post not found"
-    })
-}
+      message: "post not found",
+    });
+  }
 
-const isValidUser = post.user.toString() === userId
- if(!isValidUser){
+  const isValidUser = post.user.toString() === userId;
+  if (!isValidUser) {
     return res.status(403).json({
-      message: "forbidden content"
-    })
+      message: "forbidden content",
+    });
   }
 
   return res.status(200).json({
-    message:"Post detail fetched successfully",
-    post
-  })
+    message: "Post detail fetched successfully",
+    post,
+  });
+};
 
-
-}
-
-module.exports = { createPostController, getAllPostController,getPostDetail };
+module.exports = { createPostController, getAllPostController, getPostDetail };
