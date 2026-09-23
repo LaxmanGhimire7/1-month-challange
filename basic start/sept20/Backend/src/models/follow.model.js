@@ -10,10 +10,18 @@ const followSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      default: "pending",
+      enum: {
+        values: ["pending", "accepted", "rejected"],
+        message: "status can only be pending, accepted or rejected.",
+      },
+    },
   },
   { timestamps: true },
 );
 
-followSchema.index({ follower: 1, following: 1 }, { unique: true })
+followSchema.index({ follower: 1, following: 1 }, { unique: true });
 
-module.exports = followModel = mongoose.model("follows", followSchema)
+module.exports = followModel = mongoose.model("follows", followSchema);
